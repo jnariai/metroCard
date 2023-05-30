@@ -1,23 +1,20 @@
-package com.openToolsVerse.service;
+package com.jnariai.service;
 
-import com.openToolsVerse.dto.RequestUserDto;
-import com.openToolsVerse.dto.ResponseUserDto;
-import com.openToolsVerse.entity.User;
-import com.openToolsVerse.repository.UserRepository;
+import com.jnariai.dto.RequestUserDto;
+import com.jnariai.dto.ResponseUserDto;
+import com.jnariai.entity.User;
+import com.jnariai.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     public List<ResponseUserDto> findAll() {
         return this.userRepository.findAll().stream().map(this::mapUserToResponseUserDto).collect(Collectors.toList());

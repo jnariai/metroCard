@@ -1,6 +1,6 @@
-package com.openToolsVerse.dto;
+package com.jnariai.dto;
 
-import com.openToolsVerse.shared.PassagerType;
+import com.jnariai.shared.PassagerType;
 
 public record ResponseUserDto(
         String id,

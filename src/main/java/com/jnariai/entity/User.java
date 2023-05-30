@@ -1,6 +1,6 @@
-package com.openToolsVerse.entity;
+package com.jnariai.entity;
 
-import com.openToolsVerse.shared.PassagerType;
+import com.jnariai.shared.PassagerType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

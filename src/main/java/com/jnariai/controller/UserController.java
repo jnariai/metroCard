@@ -1,9 +1,9 @@
-package com.openToolsVerse.controller;
+package com.jnariai.controller;
 
-import com.openToolsVerse.dto.RequestUserDto;
-import com.openToolsVerse.dto.ResponseUserDto;
-import com.openToolsVerse.entity.User;
-import com.openToolsVerse.service.UserService;
+import com.jnariai.dto.RequestUserDto;
+import com.jnariai.dto.ResponseUserDto;
+import com.jnariai.entity.User;
+import com.jnariai.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

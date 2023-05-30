@@ -1,6 +1,6 @@
-package com.openToolsVerse.repository;
+package com.jnariai.repository;
 
-import com.openToolsVerse.entity.User;
+import com.jnariai.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

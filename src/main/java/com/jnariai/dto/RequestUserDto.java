@@ -1,5 +1,5 @@
-package com.openToolsVerse.dto;
-import com.openToolsVerse.shared.PassagerType;
+package com.jnariai.dto;
+import com.jnariai.shared.PassagerType;
 
 public record RequestUserDto (String name, String email, String password, PassagerType passagerType){
     public RequestUserDto(String name, String email, String password, PassagerType passagerType){

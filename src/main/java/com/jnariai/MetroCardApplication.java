@@ -1,4 +1,4 @@
-package com.openToolsVerse;
+package com.jnariai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
