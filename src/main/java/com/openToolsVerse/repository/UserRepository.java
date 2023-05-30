@@ -1,6 +1,6 @@
-package com.template.template.repository;
+package com.openToolsVerse.repository;
 
-import com.template.template.entity.User;
+import com.openToolsVerse.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

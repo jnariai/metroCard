@@ -1,6 +1,6 @@
-package com.template.template.dto;
+package com.openToolsVerse.dto;
 
-import com.template.template.shared.PassagerType;
+import com.openToolsVerse.shared.PassagerType;
 
 public record ResponseUserDto(
         String id,

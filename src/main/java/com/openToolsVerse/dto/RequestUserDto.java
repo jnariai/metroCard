@@ -1,7 +1,7 @@
-package com.template.template.dto;
-import com.template.template.shared.PassagerType;
+package com.openToolsVerse.dto;
+import com.openToolsVerse.shared.PassagerType;
 
-public record RequestUserDto (String name,String email, String password,PassagerType passagerType){
+public record RequestUserDto (String name, String email, String password, PassagerType passagerType){
     public RequestUserDto(String name, String email, String password, PassagerType passagerType){
         this.name = name;
         this.email = email;
