@@ -1,38 +1,38 @@
 package com.jnariai.controller;
 
-import com.jnariai.dto.RequestUserDto;
-import com.jnariai.dto.ResponseUserDto;
-import com.jnariai.entity.User;
+import com.jnariai.dto.CreateUserDto;
+import com.jnariai.dto.ListUserDto;
 import com.jnariai.service.UserService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @GetMapping
-    public ResponseEntity<List<ResponseUserDto>> getUsers(){
-        return ResponseEntity.ok().body(this.userService.findAll());
+    public List<ListUserDto> list() {
+        return userService.list();
     }
+
+    @GetMapping("/{id}")
+    public ListUserDto findById(@PathVariable @NotNull String id) {
+        return userService.findById(id);
+    }
+
     @PostMapping
-    public ResponseEntity<ResponseUserDto> createUser(@RequestBody RequestUserDto userDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(userDTO));
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ListUserDto create(@RequestBody @Valid @NotNull CreateUserDto userDto) {
+        return userService.create(userDto);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> updateUser(@PathVariable String id, @RequestBody RequestUserDto requestUserDto){
-        return ResponseEntity.ok(this.userService.update(requestUserDto, id));
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable String id){
-        this.userService.delete(id);
-        return ResponseEntity.ok("User " + id + " deleted successfully");
-    }
-
-
 }

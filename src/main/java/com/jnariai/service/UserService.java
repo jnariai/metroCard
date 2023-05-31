@@ -1,10 +1,14 @@
 package com.jnariai.service;
 
-import com.jnariai.dto.RequestUserDto;
-import com.jnariai.dto.ResponseUserDto;
-import com.jnariai.entity.User;
+import com.jnariai.dto.CreateUserDto;
+import com.jnariai.dto.ListUserDto;
+import com.jnariai.dto.mapper.UserMapper;
+import com.jnariai.exceptions.EmailAlreadyExistException;
+import com.jnariai.exceptions.RecordNotFoundException;
 import com.jnariai.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,51 +19,26 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public List<ResponseUserDto> findAll() {
-        return this.userRepository.findAll().stream().map(this::mapUserToResponseUserDto).collect(Collectors.toList());
+    public List<ListUserDto> list() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toListUserDto)
+                .collect(Collectors.toList());
     }
 
-    public ResponseUserDto save(RequestUserDto userDTO) {
-        // validate email
-        User user = mapRequestUserDtoToUser(userDTO);
-        this.userRepository.save(user);
-        return mapUserToResponseUserDto(user);
+    public ListUserDto findById(String id) {
+        return userRepository.findById(id).map(userMapper::toListUserDto)
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public ResponseUserDto update(RequestUserDto requestUserDto, String id) {
-        User user = this.findById(id);
-        if (requestUserDto.name() != null) {
-            user.setName(requestUserDto.name());
+    public ListUserDto create(@Valid @NotNull CreateUserDto userDto) {
+        boolean emailExist = userRepository.findByEmail(userDto.email()).isPresent();
+        if (emailExist){
+            throw new EmailAlreadyExistException();
         }
-        if (requestUserDto.email() != null) {
-            user.setEmail(requestUserDto.email());
-        }
-        if (requestUserDto.password() != null) {
-            user.setPassword(requestUserDto.password());
-        }
-        if (requestUserDto.passagerType() != null) {
-            user.setPassagerType(requestUserDto.passagerType());
-        }
-        this.userRepository.save(user);
-        return mapUserToResponseUserDto(user);
-    }
+        return userMapper.toListUserDto(userRepository.save(userMapper.toEntityUser(userDto)));
 
-    public void delete(String id){
-        User user = this.findById(id);
-        if  (user != null) this.userRepository.deleteById(id);
-
-    }
-
-    public User findById(String id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User does not exist"));
-    }
-
-    private ResponseUserDto mapUserToResponseUserDto(User user) {
-        return new ResponseUserDto(user.getId(), user.getName(), user.getEmail(), user.getPassagerType());
-    }
-
-    private User mapRequestUserDtoToUser(RequestUserDto userDTO) {
-        return new User(userDTO.name(), userDTO.email(), userDTO.password(), userDTO.passagerType());
     }
 }
