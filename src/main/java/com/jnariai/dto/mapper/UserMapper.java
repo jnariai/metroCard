@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.jnariai.dto.CreateUserDto;
 import com.jnariai.dto.ListUserDto;
 import com.jnariai.entity.User;
-import com.jnariai.shared.PassagerType;
+import com.jnariai.shared.PassangerType;
 
 @Component
 public class UserMapper {
@@ -14,7 +14,7 @@ public class UserMapper {
       return null;
     }
 
-    return new ListUserDto(user.getId(), user.getName(), user.getEmail(), user.getPassagerType());
+    return new ListUserDto(user.getId(), user.getName(), user.getEmail(), user.getPassangerType());
   }
 
   public User toEntityUser(CreateUserDto createUserDto){
@@ -26,19 +26,19 @@ public class UserMapper {
     user.setName(createUserDto.name());
     user.setEmail(createUserDto.email());
     user.setPassword(createUserDto.password());
-    user.setPassagerType(this.convertToPassagerType(createUserDto.passagerType()));
+    user.setPassangerType(this.convertToPassangerType(createUserDto.passangerType()));
     return user;
   }
 
-  public PassagerType convertToPassagerType(String passagerType){
-    if (passagerType == null){
+  public PassangerType convertToPassangerType(String passangerType){
+    if (passangerType == null){
       return null;
     }
-    return switch (passagerType) {
-      case "ADULT" -> PassagerType.ADULT;
-      case "KID" -> PassagerType.KID;
-      case "SENIOR" -> PassagerType.SENIOR;
-      default -> throw new IllegalArgumentException("Passager type is invalid: " + passagerType);
+    return switch (passangerType) {
+      case "ADULT" -> PassangerType.ADULT;
+      case "KID" -> PassangerType.KID;
+      case "SENIOR" -> PassangerType.SENIOR;
+      default -> throw new IllegalArgumentException("Passanger type is invalid: " + passangerType);
     };
   }
 

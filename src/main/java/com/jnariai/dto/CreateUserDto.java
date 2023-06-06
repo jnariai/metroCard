@@ -7,7 +7,7 @@ public record CreateUserDto(
   @NotBlank String name,
   @NotBlank @Email String email,
   @NotBlank String password,
-  @NotBlank String passagerType
+  @NotBlank String passangerType
 ) {
   
 }

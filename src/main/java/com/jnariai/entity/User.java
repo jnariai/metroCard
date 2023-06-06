@@ -1,6 +1,6 @@
 package com.jnariai.entity;
 
-import com.jnariai.shared.PassagerType;
+import com.jnariai.shared.PassangerType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -27,12 +29,16 @@ public class User implements Serializable {
     @NotBlank
     private String password;
     @Enumerated(EnumType.STRING)
-    private PassagerType passagerType;
+    private PassangerType passangerType;
+    @OneToMany(mappedBy = "user")
+    private List<Metrocard> metrocards;
+    
 
-    public User(String name, String email, String password, PassagerType passagerType) {
+
+    public User(String name, String email, String password, PassangerType passangerType) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.passagerType = passagerType;
+        this.passangerType = passangerType;
     }
 }
