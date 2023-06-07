@@ -1,7 +1,7 @@
 package com.jnariai.controller;
 
 import com.jnariai.dto.CreateUserDto;
-import com.jnariai.dto.ListUserDto;
+import com.jnariai.dto.UserDTO;
 import com.jnariai.service.UserService;
 
 import jakarta.validation.Valid;
@@ -21,18 +21,18 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<ListUserDto> list() {
+    public List<UserDTO> list() {
         return userService.list();
     }
 
     @GetMapping("/{id}")
-    public ListUserDto findById(@PathVariable @NotNull String id) {
+    public UserDTO findById(@PathVariable @NotNull String id) {
         return userService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ListUserDto create(@RequestBody @Valid @NotNull CreateUserDto userDto) {
+    public UserDTO create(@RequestBody @Valid @NotNull CreateUserDto userDto) {
         return userService.create(userDto);
     }
 }

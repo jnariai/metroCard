@@ -3,18 +3,18 @@ package com.jnariai.dto.mapper;
 import org.springframework.stereotype.Component;
 
 import com.jnariai.dto.CreateUserDto;
-import com.jnariai.dto.ListUserDto;
+import com.jnariai.dto.UserDTO;
 import com.jnariai.entity.User;
 import com.jnariai.shared.PassangerType;
 
 @Component
 public class UserMapper {
-  public ListUserDto toListUserDto (User user) {
+  public UserDTO toListUserDto (User user) {
     if (user == null) {
       return null;
     }
 
-    return new ListUserDto(user.getId(), user.getName(), user.getEmail(), user.getPassangerType());
+    return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPassangerType());
   }
 
   public User toEntityUser(CreateUserDto createUserDto){

@@ -1,7 +1,7 @@
 package com.jnariai.service;
 
 import com.jnariai.dto.CreateUserDto;
-import com.jnariai.dto.ListUserDto;
+import com.jnariai.dto.UserDTO;
 import com.jnariai.dto.mapper.UserMapper;
 import com.jnariai.exceptions.EmailAlreadyExistException;
 import com.jnariai.exceptions.RecordNotFoundException;
@@ -21,19 +21,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<ListUserDto> list() {
+    public List<UserDTO> list() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toListUserDto)
                 .collect(Collectors.toList());
     }
 
-    public ListUserDto findById(String id) {
+    public UserDTO findById(String id) {
         return userRepository.findById(id).map(userMapper::toListUserDto)
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public ListUserDto create(@Valid @NotNull CreateUserDto userDto) {
+    public UserDTO create(@Valid @NotNull CreateUserDto userDto) {
         boolean emailExist = userRepository.findByEmail(userDto.email()).isPresent();
         if (emailExist){
             throw new EmailAlreadyExistException();
