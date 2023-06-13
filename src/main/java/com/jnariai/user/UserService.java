@@ -1,15 +1,17 @@
-package com.jnariai.service;
+package com.jnariai.user;
 
-import com.jnariai.dto.CreateUserDto;
-import com.jnariai.dto.UserDTO;
-import com.jnariai.dto.mapper.UserMapper;
 import com.jnariai.exceptions.EmailAlreadyExistException;
 import com.jnariai.exceptions.RecordNotFoundException;
-import com.jnariai.repository.UserRepository;
+import com.jnariai.user.dto.CreateUserDto;
+import com.jnariai.user.dto.UserDTO;
+import com.jnariai.user.dto.UserMapper;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +40,8 @@ public class UserService {
         if (emailExist){
             throw new EmailAlreadyExistException();
         }
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
         return userMapper.toListUserDto(userRepository.save(userMapper.toEntityUser(userDto)));
 
     }

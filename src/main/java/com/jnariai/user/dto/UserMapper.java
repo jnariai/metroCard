@@ -1,11 +1,9 @@
-package com.jnariai.dto.mapper;
+package com.jnariai.user.dto;
 
 import org.springframework.stereotype.Component;
 
-import com.jnariai.dto.CreateUserDto;
-import com.jnariai.dto.UserDTO;
-import com.jnariai.entity.User;
 import com.jnariai.shared.PassangerType;
+import com.jnariai.user.User;
 
 @Component
 public class UserMapper {

@@ -1,4 +1,4 @@
-package com.jnariai.dto;
+package com.jnariai.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

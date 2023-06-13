@@ -1,4 +1,4 @@
-package com.jnariai.entity;
+package com.jnariai.travel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.jnariai.metrocard.Metrocard;
 import com.jnariai.shared.PassangerType;
 import com.jnariai.shared.Station;
 

@@ -1,4 +1,4 @@
-package com.jnariai.entity;
+package com.jnariai.user;
 
 import com.jnariai.shared.PassangerType;
 import jakarta.persistence.*;
