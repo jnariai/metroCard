@@ -7,7 +7,7 @@ import com.jnariai.user.User;
 
 @Component
 public class UserMapper {
-  public UserDTO toListUserDto (User user) {
+  public UserDTO userToUserDTO (User user) {
     if (user == null) {
       return null;
     }
@@ -15,7 +15,7 @@ public class UserMapper {
     return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getPassangerType());
   }
 
-  public User toEntityUser(CreateUserDto createUserDto){
+  public User createUserDTOToUser(CreateUserDto createUserDto){
     if (createUserDto == null){
       return null;
     }
@@ -24,11 +24,11 @@ public class UserMapper {
     user.setName(createUserDto.name());
     user.setEmail(createUserDto.email());
     user.setPassword(createUserDto.password());
-    user.setPassangerType(this.convertToPassangerType(createUserDto.passangerType()));
+    user.setPassangerType(this.convertStringToPassangerType(createUserDto.passangerType()));
     return user;
   }
 
-  public PassangerType convertToPassangerType(String passangerType){
+  public PassangerType convertStringToPassangerType(String passangerType){
     if (passangerType == null){
       return null;
     }

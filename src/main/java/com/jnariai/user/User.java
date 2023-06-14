@@ -1,5 +1,6 @@
 package com.jnariai.user;
 
+import com.jnariai.metrocard.Metrocard;
 import com.jnariai.shared.PassangerType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
