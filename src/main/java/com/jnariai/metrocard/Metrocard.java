@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.jnariai.travel.Travel;
 import com.jnariai.user.User;
 
 import jakarta.persistence.Entity;
@@ -33,5 +34,4 @@ public class Metrocard implements Serializable{
   private User user;
   @OneToMany(mappedBy = "metrocard")
   private List<Travel> travels;
-  
 }
