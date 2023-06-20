@@ -8,10 +8,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.util.List;
 
 @Service
@@ -28,15 +26,14 @@ public class UserService {
         return userRepository.findById(id).map(userMapper::userToUserDTO).orElseThrow(EntityNotFoundException::new);
     }
 
-    public ResponseEntity<UserDTO> createUser(@Valid @NotNull CreateUserDto userDto) {
+    public UserDTO createUser(@Valid @NotNull CreateUserDto userDto) {
         boolean emailExist = userRepository.existsByEmail(userDto.email());
         if (emailExist) {
             throw new EntityExistsException();
         }
         User user = userMapper.createUserDTOToUser(userDto);
         User createdUser = userRepository.save(user);
-        URI location = URI.create("/api/users/" + createdUser.getId());
-        return ResponseEntity.created(location).body(userMapper.userToUserDTO(createdUser));
+        return userMapper.userToUserDTO(createdUser);
 
     }
 }

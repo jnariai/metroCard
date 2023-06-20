@@ -1,15 +1,13 @@
 package com.jnariai.user;
 
+import com.jnariai.user.dto.CreateUserDto;
+import com.jnariai.user.dto.UserDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import com.jnariai.user.dto.CreateUserDto;
-import com.jnariai.user.dto.UserDTO;
 
 @Validated
 @RestController
@@ -24,8 +22,7 @@ public class UserController {
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserDto userDto) {
-        return userService.createUser(userDto);
+        return ResponseEntity.created(null).body(userService.createUser(userDto));
     }
 }

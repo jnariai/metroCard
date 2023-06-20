@@ -8,7 +8,6 @@ import com.jnariai.shared.Station;
 import com.jnariai.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,7 +21,7 @@ public class TravelService {
 	private final BigDecimal discount = BigDecimal.valueOf(0.5);
 	private final BigDecimal fee = BigDecimal.valueOf(0.02);
 
-	public ResponseEntity<Object> createTravel(TravelDTO travelDTO) {
+	public Travel createTravel(TravelDTO travelDTO) {
 		String metrocardId = travelDTO.metrocardId();
 		Metrocard metrocard = getMetrocardById(metrocardId);
 		int travelsToday = countTravelsToday(metrocardId);
@@ -36,8 +35,7 @@ public class TravelService {
 		Travel travel = createNewTravel(price, passangerType, travelDTO.station(), metrocard, hasDiscount);
 
 		if (balance.compareTo(BigDecimal.valueOf(price)) >= 0) {
-			processSuccessfulTravel(travel);
-			return ResponseEntity.ok().build();
+			return processSuccessfulTravel(travel);
 		}
 
 		if (!metrocard.isAutoRecharge()) {
@@ -45,8 +43,7 @@ public class TravelService {
 		}
 
 		BigDecimal remainingCost = BigDecimal.valueOf(price).subtract(balance);
-		processInsufficientFunds(travel, remainingCost);
-		return ResponseEntity.ok().build();
+		return processInsufficientFunds(travel, remainingCost);
 	}
 
 	private Metrocard getMetrocardById(String metrocardId) {
@@ -84,19 +81,19 @@ public class TravelService {
 		return travel;
 	}
 
-	private void processSuccessfulTravel(Travel travel) {
-		travelRepository.save(travel);
+	private Travel processSuccessfulTravel(Travel travel) {
 		Metrocard metrocard = travel.getMetrocard();
 		BigDecimal balance = metrocard.getBalance();
 		metrocard.setBalance(balance.subtract(BigDecimal.valueOf(travel.getCost())));
 		metrocardRepository.save(metrocard);
+		return travelRepository.save(travel);
 	}
 
-	private void processInsufficientFunds(Travel travel, BigDecimal remainingCost) {
+	private Travel processInsufficientFunds(Travel travel, BigDecimal remainingCost) {
 		Metrocard metrocard = travel.getMetrocard();
 		metrocard.setBalance(BigDecimal.ZERO);
 		travel.setFee(remainingCost.multiply(fee));
 		metrocardRepository.save(metrocard);
-		travelRepository.save(travel);
+		return travelRepository.save(travel);
 	}
 }

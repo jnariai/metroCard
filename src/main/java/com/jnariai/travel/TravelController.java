@@ -15,7 +15,8 @@ public class TravelController {
 	private final TravelService travelService;
 
 	@PostMapping
-	public ResponseEntity<Object> createTravel(@RequestBody @Valid TravelDTO travelDTO) {
-		return this.travelService.createTravel(travelDTO);
+	public ResponseEntity<Void> createTravel(@RequestBody @Valid TravelDTO travelDTO) {
+		this.travelService.createTravel(travelDTO);
+		return ResponseEntity.ok().build();
 	}
 }
