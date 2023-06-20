@@ -21,7 +21,7 @@ public class TravelService {
 	private final BigDecimal discount = BigDecimal.valueOf(0.5);
 	private final BigDecimal fee = BigDecimal.valueOf(0.02);
 
-	public Travel createTravel(TravelDTO travelDTO) {
+	public CreatedTravelDTO createTravel(TravelDTO travelDTO) {
 		String metrocardId = travelDTO.metrocardId();
 		Metrocard metrocard = getMetrocardById(metrocardId);
 		int travelsToday = countTravelsToday(metrocardId);
@@ -81,19 +81,21 @@ public class TravelService {
 		return travel;
 	}
 
-	private Travel processSuccessfulTravel(Travel travel) {
+	private CreatedTravelDTO processSuccessfulTravel(Travel travel) {
 		Metrocard metrocard = travel.getMetrocard();
 		BigDecimal balance = metrocard.getBalance();
 		metrocard.setBalance(balance.subtract(BigDecimal.valueOf(travel.getCost())));
 		metrocardRepository.save(metrocard);
-		return travelRepository.save(travel);
+		Travel newTravel = travelRepository.save(travel);
+		return new CreatedTravelDTO(newTravel.getId(), newTravel.getCost(), newTravel.isHasDiscount(), newTravel.getFee(), newTravel.getStation(), newTravel.getBoughtAt());
 	}
 
-	private Travel processInsufficientFunds(Travel travel, BigDecimal remainingCost) {
+	private CreatedTravelDTO processInsufficientFunds(Travel travel, BigDecimal remainingCost) {
 		Metrocard metrocard = travel.getMetrocard();
 		metrocard.setBalance(BigDecimal.ZERO);
 		travel.setFee(remainingCost.multiply(fee));
 		metrocardRepository.save(metrocard);
-		return travelRepository.save(travel);
+		Travel newTravel = travelRepository.save(travel);
+		return new CreatedTravelDTO(newTravel.getId(), newTravel.getCost(), newTravel.isHasDiscount(), newTravel.getFee(), newTravel.getStation(), newTravel.getBoughtAt());
 	}
 }

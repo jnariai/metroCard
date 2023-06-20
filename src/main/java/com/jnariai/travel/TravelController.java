@@ -15,8 +15,7 @@ public class TravelController {
 	private final TravelService travelService;
 
 	@PostMapping
-	public ResponseEntity<Void> createTravel(@RequestBody @Valid TravelDTO travelDTO) {
-		this.travelService.createTravel(travelDTO);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<CreatedTravelDTO> createTravel(@RequestBody @Valid TravelDTO travelDTO) {
+		return ResponseEntity.ok().body(this.travelService.createTravel(travelDTO));
 	}
 }
