@@ -1,7 +1,7 @@
 package com.jnariai.user;
 
 import com.jnariai.metrocard.Metrocard;
-import com.jnariai.shared.PassangerType;
+import com.jnariai.shared.PassengerType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "users")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue (strategy = GenerationType.UUID)
     private String id;
     @NotBlank
     private String name;
@@ -29,17 +29,16 @@ public class User implements Serializable {
     private String email;
     @NotBlank
     private String password;
-    @Enumerated(EnumType.STRING)
-    private PassangerType passangerType;
-    @OneToMany(mappedBy = "user")
+    @Enumerated (EnumType.STRING)
+    private PassengerType passengerType;
+    @OneToMany (mappedBy = "user")
     private List<Metrocard> metrocards;
-    
 
 
-    public User(String name, String email, String password, PassangerType passangerType) {
+    public User(String name, String email, String password, PassengerType passengerType) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.passangerType = passangerType;
+        this.passengerType = passengerType;
     }
 }

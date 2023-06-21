@@ -1,7 +1,7 @@
 package com.jnariai.travel;
 
 import com.jnariai.metrocard.Metrocard;
-import com.jnariai.shared.PassangerType;
+import com.jnariai.shared.PassengerType;
 import com.jnariai.shared.Station;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,8 +20,9 @@ public class Travel implements Serializable {
   @GeneratedValue (strategy = GenerationType.UUID)
   private String id;
   private int cost;
+  @Column (name = "passenger_type")
   @Enumerated (EnumType.STRING)
-  private PassangerType passangerType;
+  private PassengerType passengerType;
   private boolean hasDiscount;
   private BigDecimal fee = BigDecimal.valueOf(0);
   @Enumerated (EnumType.STRING)

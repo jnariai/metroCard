@@ -3,14 +3,19 @@ package com.jnariai.travel;
 import com.jnariai.exceptions.InsufficientFundsException;
 import com.jnariai.metrocard.Metrocard;
 import com.jnariai.metrocard.MetrocardRepository;
-import com.jnariai.shared.PassangerType;
+import com.jnariai.shared.PassengerType;
 import com.jnariai.shared.Station;
+import com.jnariai.travel.dto.CreatedTravelDTO;
+import com.jnariai.travel.dto.TravelDTO;
+import com.jnariai.travel.pojo.CollectionSummary;
+import com.jnariai.travel.pojo.PassengerSummary;
 import com.jnariai.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -25,14 +30,14 @@ public class TravelService {
 		String metrocardId = travelDTO.metrocardId();
 		Metrocard metrocard = getMetrocardById(metrocardId);
 		int travelsToday = countTravelsToday(metrocardId);
-		PassangerType passangerType = getPassangerType(metrocard);
-		int price = getPrice(passangerType);
+		PassengerType passengerType = getPassengerType(metrocard);
+		int price = getPrice(passengerType);
 		BigDecimal balance = metrocard.getBalance();
 		boolean hasDiscount = travelsToday != 0 && travelsToday % 2 == 0;
 		if (hasDiscount) {
 			price = discountedPrice(price);
 		}
-		Travel travel = createNewTravel(price, passangerType, travelDTO.station(), metrocard, hasDiscount);
+		Travel travel = createNewTravel(price, passengerType, travelDTO.station(), metrocard, hasDiscount);
 
 		if (balance.compareTo(BigDecimal.valueOf(price)) >= 0) {
 			return processSuccessfulTravel(travel);
@@ -46,6 +51,14 @@ public class TravelService {
 		return processInsufficientFunds(travel, remainingCost);
 	}
 
+	public List<CollectionSummary> getCollectionSummary() {
+		return this.travelRepository.getCollectionSummary();
+	}
+
+	public List<PassengerSummary> getPassengerSummary() {
+		return this.travelRepository.getPassengerSummary();
+	}
+
 	private Metrocard getMetrocardById(String metrocardId) {
 		return metrocardRepository.findById(metrocardId).orElseThrow(EntityNotFoundException::new);
 	}
@@ -54,11 +67,11 @@ public class TravelService {
 		return metrocardRepository.countTravelsForMetrocardToday(metrocardId);
 	}
 
-	private PassangerType getPassangerType(Metrocard metrocard) {
-		return userRepository.findById(metrocard.getUser().getId()).orElseThrow(EntityNotFoundException::new).getPassangerType();
+	private PassengerType getPassengerType(Metrocard metrocard) {
+		return userRepository.findById(metrocard.getUser().getId()).orElseThrow(EntityNotFoundException::new).getPassengerType();
 	}
 
-	private int getPrice(PassangerType passengerType) {
+	private int getPrice(PassengerType passengerType) {
 		return switch (passengerType) {
 			case ADULT -> 200;
 			case SENIOR -> 100;
@@ -71,10 +84,10 @@ public class TravelService {
 		return BigDecimal.valueOf(price).multiply(discount).intValue();
 	}
 
-	private Travel createNewTravel(int price, PassangerType passangerType, Station station, Metrocard metrocard, boolean hasDiscount) {
+	private Travel createNewTravel(int price, PassengerType passengerType, Station station, Metrocard metrocard, boolean hasDiscount) {
 		Travel travel = new Travel();
 		travel.setCost(price);
-		travel.setPassangerType(passangerType);
+		travel.setPassengerType(passengerType);
 		travel.setStation(station);
 		travel.setMetrocard(metrocard);
 		travel.setHasDiscount(hasDiscount);

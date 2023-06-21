@@ -1,5 +1,7 @@
 package com.jnariai.travel;
 
+import com.jnariai.travel.dto.CreatedTravelDTO;
+import com.jnariai.travel.dto.TravelDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

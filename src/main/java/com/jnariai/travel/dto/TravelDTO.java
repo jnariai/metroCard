@@ -1,4 +1,4 @@
-package com.jnariai.travel;
+package com.jnariai.travel.dto;
 
 import com.jnariai.shared.Station;
 import jakarta.validation.constraints.NotBlank;

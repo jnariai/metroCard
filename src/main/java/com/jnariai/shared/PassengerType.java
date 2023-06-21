@@ -1,5 +1,5 @@
 package com.jnariai.shared;
 
-public enum PassangerType {
+public enum PassengerType {
     ADULT, KID, SENIOR
 }

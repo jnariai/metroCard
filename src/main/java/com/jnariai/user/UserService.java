@@ -5,8 +5,6 @@ import com.jnariai.user.dto.UserDTO;
 import com.jnariai.user.dto.UserMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<UserDTO> list() {
+    public List<UserDTO> findAll() {
         return userRepository.findAll().stream().map(userMapper::userToUserDTO).toList();
     }
 
@@ -26,7 +24,7 @@ public class UserService {
         return userRepository.findById(id).map(userMapper::userToUserDTO).orElseThrow(EntityNotFoundException::new);
     }
 
-    public UserDTO createUser(@Valid @NotNull CreateUserDto userDto) {
+    public UserDTO createUser(CreateUserDto userDto) {
         boolean emailExist = userRepository.existsByEmail(userDto.email());
         if (emailExist) {
             throw new EntityExistsException();
