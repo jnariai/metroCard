@@ -6,6 +6,7 @@ import com.jnariai.user.dto.UserMapper;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +31,13 @@ public class UserService {
             throw new EntityExistsException();
         }
         User user = userMapper.createUserDTOToUser(userDto);
+        user.setPassword(hashPassword(user.getPassword()));
         User createdUser = userRepository.save(user);
         return userMapper.userToUserDTO(createdUser);
+    }
 
+    public String hashPassword(String plainPassword) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        return bcrypt.encode(plainPassword);
     }
 }
