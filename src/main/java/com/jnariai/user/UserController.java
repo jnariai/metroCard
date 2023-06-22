@@ -6,6 +6,7 @@ import com.jnariai.user.dto.UserPasswordDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,12 @@ public class UserController {
 
     @GetMapping ("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable @NotNull String id) {
-
         return ResponseEntity.ok().body(userService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserDto userDto) {
-        return ResponseEntity.created(null).body(userService.createUser(userDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
     }
 
     @PutMapping ("/{id}")

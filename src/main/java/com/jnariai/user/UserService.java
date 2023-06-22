@@ -23,13 +23,13 @@ public class UserService {
     }
 
     public UserDTO findById(String id) {
-        return userRepository.findById(id).map(userMapper::userToUserDTO).orElseThrow(EntityNotFoundException::new);
+        return userRepository.findById(id).map(userMapper::userToUserDTO).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     public UserDTO createUser(CreateUserDto userDto) {
         boolean emailExist = userRepository.existsByEmail(userDto.email());
         if (emailExist) {
-            throw new EntityExistsException();
+            throw new EntityExistsException("Email already exists");
         }
         User user = userMapper.createUserDTOToUser(userDto);
         user.setPassword(hashPassword(user.getPassword()));
@@ -52,4 +52,5 @@ public class UserService {
             throw new IllegalArgumentException("Invalid password");
         }
     }
+
 }

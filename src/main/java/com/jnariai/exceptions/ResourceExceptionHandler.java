@@ -12,23 +12,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler (EntityNotFoundException.class)
-  public ResponseEntity<Object> notFoundException(String message) {
-    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.NOT_FOUND);
+  public ResponseEntity<Object> notFoundException(EntityNotFoundException exception) {
+    return new ResponseEntity<>(exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler (EntityExistsException.class)
-  public ResponseEntity<Object> entityAlreadyExist(String message) {
-    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.CONFLICT);
+  public ResponseEntity<Object> entityAlreadyExist(EntityExistsException exception) {
+    return new ResponseEntity<>(exception.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler (InsufficientFundsException.class)
-  public ResponseEntity<Object> insufficientFunds() {
-    return new ResponseEntity<>("Insufficient Funds!", new HttpHeaders(), HttpStatus.PAYMENT_REQUIRED);
+  public ResponseEntity<Object> insufficientFunds(InsufficientFundsException exception) {
+    return new ResponseEntity<>(exception.getMessage(), new HttpHeaders(), HttpStatus.PAYMENT_REQUIRED);
   }
 
   @ExceptionHandler (value = {IllegalArgumentException.class})
-  public ResponseEntity<Object> illegalArgument(String message) {
-    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<Object> illegalArgument(IllegalArgumentException exception) {
+    return new ResponseEntity<>(exception.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 
 }
