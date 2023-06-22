@@ -2,6 +2,7 @@ package com.jnariai.user;
 
 import com.jnariai.user.dto.CreateUserDto;
 import com.jnariai.user.dto.UserDTO;
+import com.jnariai.user.dto.UserPasswordDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,15 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserDto userDto) {
         return ResponseEntity.created(null).body(userService.createUser(userDto));
+    }
+
+    @PutMapping ("/{id}")
+    public ResponseEntity<String> uppdateUserPassword(@PathVariable @NotNull String id, @RequestBody @Valid UserPasswordDTO userPasswordDTO) {
+        try {
+            userService.updateUserPassword(id, userPasswordDTO);
+            return ResponseEntity.ok("Password updated succesfully");
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 }

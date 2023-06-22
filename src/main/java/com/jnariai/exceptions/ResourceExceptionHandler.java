@@ -26,4 +26,9 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>("Insufficient Funds!", new HttpHeaders(), HttpStatus.PAYMENT_REQUIRED);
   }
 
+  @ExceptionHandler (value = {IllegalArgumentException.class})
+  public ResponseEntity<Object> illegalArgument(String message) {
+    return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
 }

@@ -3,6 +3,7 @@ package com.jnariai.user;
 import com.jnariai.user.dto.CreateUserDto;
 import com.jnariai.user.dto.UserDTO;
 import com.jnariai.user.dto.UserMapper;
+import com.jnariai.user.dto.UserPasswordDTO;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,16 @@ public class UserService {
     public String hashPassword(String plainPassword) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         return bcrypt.encode(plainPassword);
+    }
+
+    public void updateUserPassword(String id, UserPasswordDTO userPasswordDTO) {
+        User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        if (bcrypt.matches(userPasswordDTO.oldPassword(), user.getPassword())) {
+            user.setPassword(this.hashPassword(userPasswordDTO.newPassword()));
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Invalid password");
+        }
     }
 }
