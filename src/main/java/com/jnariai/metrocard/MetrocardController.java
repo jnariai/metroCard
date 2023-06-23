@@ -1,10 +1,7 @@
 package com.jnariai.metrocard;
 
 
-import com.jnariai.metrocard.dto.CreateMetrocardDTO;
-import com.jnariai.metrocard.dto.DepositMoneyMetrocardDTO;
-import com.jnariai.metrocard.dto.MetrocardDTO;
-import com.jnariai.metrocard.dto.MetrocardUserDTO;
+import com.jnariai.metrocard.dto.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,9 +30,14 @@ public class MetrocardController {
 	}
 
 	@PutMapping ("/balance/{id}")
-	public ResponseEntity<Void> depositMoney(@PathVariable ("id") String id, @RequestBody @Valid DepositMoneyMetrocardDTO depositMoneyMetrocardDTO) {
+	public ResponseEntity<String> depositMoney(@PathVariable ("id") String id, @RequestBody @Valid DepositMoneyMetrocardDTO depositMoneyMetrocardDTO) {
 		metrocardService.depositMoney(id, depositMoneyMetrocardDTO);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body("Money deposited");
+	}
+
+	@PutMapping ("/autorecharge/{id}")
+	public ResponseEntity<MetrocardUserDTO> toggleAutoRecharge(@PathVariable @NotNull String id, @RequestBody @Valid MetrocardAutoRechargeDTO metrocardAutoRechargeDTO) {
+		return ResponseEntity.ok().body(metrocardService.toggleAutoRecharge(id, metrocardAutoRechargeDTO));
 	}
 
 
