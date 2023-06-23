@@ -62,7 +62,8 @@ public class TravelService {
 	}
 
 	private Metrocard getMetrocardById(String metrocardId) {
-		return metrocardRepository.findById(metrocardId).orElseThrow(EntityNotFoundException::new);
+		return metrocardRepository.findById(metrocardId)
+		                          .orElseThrow(() -> new EntityNotFoundException("Metrocard not found"));
 	}
 
 	private int countTravelsToday(String metrocardId) {
@@ -70,7 +71,9 @@ public class TravelService {
 	}
 
 	private PassengerType getPassengerType(Metrocard metrocard) {
-		return userRepository.findById(metrocard.getUser().getId()).orElseThrow(EntityNotFoundException::new).getPassengerType();
+		return userRepository.findById(metrocard.getUser().getId())
+		                     .orElseThrow(() -> new EntityNotFoundException("User not found"))
+		                     .getPassengerType();
 	}
 
 	private int getPrice(PassengerType passengerType) {

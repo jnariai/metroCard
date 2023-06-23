@@ -46,7 +46,7 @@ public class UserService {
 	}
 
 	public void updateUserPassword(String id, UserPasswordDTO userPasswordDTO) {
-		User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		if (bcrypt.matches(userPasswordDTO.oldPassword(), user.getPassword())) {
 			user.setPassword(this.hashPassword(userPasswordDTO.newPassword()));
