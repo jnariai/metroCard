@@ -1,5 +1,6 @@
 package com.jnariai.user;
 
+import com.jnariai.travel.dto.TravelUserDTO;
 import com.jnariai.user.dto.CreateUserDto;
 import com.jnariai.user.dto.UserDTO;
 import com.jnariai.user.dto.UserPasswordDTO;
@@ -18,30 +19,35 @@ import java.util.List;
 @RequestMapping ("/api/users")
 @AllArgsConstructor
 public class UserController {
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok().body(userService.findAll());
-    }
+	@GetMapping
+	public ResponseEntity<List<UserDTO>> findAll() {
+		return ResponseEntity.ok().body(userService.findAll());
+	}
 
-    @GetMapping ("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable @NotNull String id) {
-        return ResponseEntity.ok().body(userService.findById(id));
-    }
+	@GetMapping ("/{id}")
+	public ResponseEntity<UserDTO> findById(@PathVariable @NotNull String id) {
+		return ResponseEntity.ok().body(userService.findById(id));
+	}
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserDto userDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
-    }
+	@GetMapping ("/travel/{id}")
+	public ResponseEntity<List<TravelUserDTO>> getTravelByUser(@PathVariable @NotNull String id) {
+		return ResponseEntity.ok().body(userService.getTravelByUser(id));
+	}
 
-    @PutMapping ("/{id}")
-    public ResponseEntity<String> uppdateUserPassword(@PathVariable @NotNull String id, @RequestBody @Valid UserPasswordDTO userPasswordDTO) {
-        try {
-            userService.updateUserPassword(id, userPasswordDTO);
-            return ResponseEntity.ok("Password updated succesfully");
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
-    }
+	@PostMapping
+	public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserDto userDto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
+	}
+
+	@PutMapping ("/{id}")
+	public ResponseEntity<String> uppdateUserPassword(@PathVariable @NotNull String id, @RequestBody @Valid UserPasswordDTO userPasswordDTO) {
+		try {
+			userService.updateUserPassword(id, userPasswordDTO);
+			return ResponseEntity.ok("Password updated succesfully");
+		} catch (IllegalArgumentException exception) {
+			return ResponseEntity.badRequest().body(exception.getMessage());
+		}
+	}
 }

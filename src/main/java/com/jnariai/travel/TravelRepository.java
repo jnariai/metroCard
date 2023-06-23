@@ -2,6 +2,7 @@ package com.jnariai.travel;
 
 import com.jnariai.travel.pojo.CollectionSummary;
 import com.jnariai.travel.pojo.PassengerSummary;
+import com.jnariai.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,7 @@ public interface TravelRepository extends JpaRepository<Travel, String> {
 
 	@Query ("SELECT new com.jnariai.travel.pojo.PassengerSummary(t.passengerType, COUNT(*) AS travels)" + "FROM Travel t " + "GROUP BY t.passengerType " + "ORDER BY travels DESC, t.passengerType ASC")
 	List<PassengerSummary> getPassengerSummary();
+
+	List<Travel> findAllByMetrocard_User(User user);
 
 }

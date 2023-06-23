@@ -7,8 +7,10 @@ import com.jnariai.shared.PassengerType;
 import com.jnariai.shared.Station;
 import com.jnariai.travel.dto.CreatedTravelDTO;
 import com.jnariai.travel.dto.TravelDTO;
+import com.jnariai.travel.dto.TravelUserDTO;
 import com.jnariai.travel.pojo.CollectionSummary;
 import com.jnariai.travel.pojo.PassengerSummary;
+import com.jnariai.user.User;
 import com.jnariai.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -110,5 +112,10 @@ public class TravelService {
 		metrocardRepository.save(metrocard);
 		Travel newTravel = travelRepository.save(travel);
 		return new CreatedTravelDTO(newTravel.getId(), newTravel.getCost(), newTravel.isHasDiscount(), newTravel.getFee(), newTravel.getStation(), newTravel.getBoughtAt());
+	}
+
+	public List<TravelUserDTO> getTravelByUser(User user) {
+		List<Travel> travels = travelRepository.findAllByMetrocard_User(user);
+		return travels.stream().map(travel -> new TravelUserDTO(travel.getCost(), travel.isHasDiscount(), travel.getFee(), travel.getStation(), travel.getBoughtAt(), travel.getMetrocard().getId())).toList();
 	}
 }

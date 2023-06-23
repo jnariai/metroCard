@@ -17,28 +17,28 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table (name = "users")
 public class User implements Serializable {
-    @Id
-    @GeneratedValue (strategy = GenerationType.UUID)
-    private String id;
-    @NotBlank
-    private String name;
-    @NotBlank
-    @Email
-    private String email;
-    @NotBlank
-    private String password;
-    @Enumerated (EnumType.STRING)
-    private PassengerType passengerType;
-    @OneToMany (mappedBy = "user")
-    private List<Metrocard> metrocards;
+	@Id
+	@GeneratedValue (strategy = GenerationType.UUID)
+	private String id;
+	@NotBlank
+	private String name;
+	@NotBlank
+	@Email
+	private String email;
+	@NotBlank
+	private String password;
+	@Enumerated (EnumType.STRING)
+	private PassengerType passengerType;
+	@OneToMany (mappedBy = "user")
+	private List<Metrocard> metrocards;
 
 
-    public User(String name, String email, String password, PassengerType passengerType) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.passengerType = passengerType;
-    }
+	public User(String name, String email, String password, PassengerType passengerType) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.passengerType = passengerType;
+	}
 }
